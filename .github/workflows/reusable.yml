@@ -7,14 +7,26 @@ on:
                 required: false
                 default: dist
                 type: string
+            run-id:
+                description: Run ID to download artifact from
+                required: true
+                type: string
+            repo:
+                description: Repository name in owner/repo format
+                required: true
+                type: string
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read 
     steps:
       - name: Get code
         uses: actions/download-artifact@v4.3.0
         with:
             name: ${{ inputs.artifact-name }}
+            run-id: ${{ inputs.run-id }}
+            repository: ${{ inputs.repo }}
       - name: list contents
         run: ls
       - name: output information
